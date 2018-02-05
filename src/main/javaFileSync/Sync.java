@@ -244,23 +244,25 @@ public class Sync
 				if(directory2Info.files.contains(file)) {
 					// If the file was stored on the DB, but now it isn't present, I have to check last modify times
 					int index = directory2Info.files.indexOf(file);
-					if(directoryTree1.lastModifyFiles.get(i) > directory2Info.lastModifyFiles.get(index)) {
-						// If the file has last been modified on the directory1,
-						// I have to copy it on the second directory
-						String pathFrom = directory1+file;
-						String pathTo = directory2+file;
-						System.out.println("[SODBNP] Copying file "+file+" from "+pathFrom+" to "+pathTo);
-						try {
-							CopyFile(new File(pathFrom), new File(pathTo));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+					if( (new File(directoryTree1.files.get(i))).length() != (new File(directory2Info.files.get(index)).length()) ) {
+						if(directoryTree1.lastModifyFiles.get(i) > directory2Info.lastModifyFiles.get(index)) {
+							// If the file has last been modified on the directory1,
+							// I have to copy it on the second directory
+							String pathFrom = directory1+file;
+							String pathTo = directory2+file;
+							System.out.println("[SODBNP] Copying file "+file+" from "+pathFrom+" to "+pathTo);
+							try {
+								CopyFile(new File(pathFrom), new File(pathTo));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							//new File(directory2+file).mkdirs();
+						} else {
+							// Else I have to delete it from directory1 too
+							System.out.println("[SODBNP] Deleting file "+directory1+file);
+							new File(directory1+file).delete();
 						}
-						//new File(directory2+file).mkdirs();
-					} else {
-						// Else I have to delete it from directory1 too
-						System.out.println("[SODBNP] Deleting file "+directory1+file);
-						new File(directory1+file).delete();
 					}
 				} else {
 					String pathFrom = directory1+file;

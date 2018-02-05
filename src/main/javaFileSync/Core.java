@@ -22,7 +22,7 @@ public class Core
 		return mount && (lenFolders || lenFiles || sizeCmp);
 	}
 	
-	public static boolean Sync()
+	public static boolean Sync() throws IOException
 	{
 		Properties directories = Interaction.LoadOrCreateDB();
 		String directory1 = directories.getProperty("directory1");

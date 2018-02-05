@@ -16,30 +16,39 @@ import java.util.Properties;
 public class Interaction
 {
 	//Confirm window
-	public static boolean Confirm(String title, String text)
+	public static boolean Confirm(String title, String text) throws IOException
 	{
-		return JOptionPane.showConfirmDialog(null, text, title, JOptionPane.YES_NO_OPTION) == 0;
+		java.io.BufferedReader console = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
+		
+		try {
+			boolean ret =  JOptionPane.showConfirmDialog(null, text, title, JOptionPane.YES_NO_OPTION) == 0;
+			return ret;
+		} catch(Exception e) {
+			System.out.print(title+": "+text+" [Y/N]: ");
+			String input = console.readLine();
+			return input.indexOf('Y') != -1;
+		}
 	}
 	//Alert window
 	public static void Alert(String title, String text)
 	{
-		JOptionPane.showMessageDialog(null, text, title, JOptionPane.INFORMATION_MESSAGE);
+		try {
+			JOptionPane.showMessageDialog(null, text, title, JOptionPane.INFORMATION_MESSAGE);
+		} catch(Exception e) {
+			System.out.print(title+": ");
+			System.out.println(text);
+		}
 	}
 	
 	//Load the DB file or create one
-	public static Properties LoadOrCreateDB()
+	public static Properties LoadOrCreateDB() throws IOException
 	{
 		Properties prop = new Properties();
 		OutputStream output = null;
 		InputStream input = null;
 		boolean dbCreated = false;
 		String configFile = "javaFileSync.conf";
-		try {
-			configFile = new File(new File(".").getAbsolutePath()).getCanonicalPath()+"/javaFileSync.conf";
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		configFile = new File(new File(".").getAbsolutePath()).getCanonicalPath()+"/javaFileSync.conf";
 		
 		while(!dbCreated)
 		{

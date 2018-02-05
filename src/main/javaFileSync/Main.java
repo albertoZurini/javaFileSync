@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException, IOException
 	{
 		while(true) {
 			try {
@@ -20,12 +20,7 @@ public class Main
 				}
 			} catch(NullPointerException error) {
 				System.out.println("Device not connected. Sleeping for 5 seconds...");
-				try {
-					TimeUnit.SECONDS.sleep(5);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				TimeUnit.SECONDS.sleep(5);
 			}
 		}
 	}
