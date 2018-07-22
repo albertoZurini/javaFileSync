@@ -11,12 +11,7 @@ public class Main
 		while(true) {
 			try {
 				if(javaFileSync.Core.Sync()) {
-					try {
-						TimeUnit.SECONDS.sleep(5);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					TimeUnit.SECONDS.sleep(5);
 				}
 			} catch(NullPointerException error) {
 				System.out.println("Device not connected. Sleeping for 5 seconds...");

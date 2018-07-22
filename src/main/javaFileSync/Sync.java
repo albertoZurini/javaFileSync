@@ -265,6 +265,7 @@ public class Sync
 						}
 					}
 				} else {
+					// File was not stored on DB
 					String pathFrom = directory1+file;
 					String pathTo = directory2+file;
 					System.out.println("[NPISF] Copying file "+file+" from "+pathFrom+" to "+pathTo);
@@ -277,29 +278,33 @@ public class Sync
 					//new File(directory2+file).mkdirs();
 				}
 			} else {
-				// If the file is present in the second directory, checking the last modify dates to copy only the newer file
-				int lastModifyTree1 = directoryTree1.lastModifyFiles.get(i);
-				int lastModifyTree2 =  directoryTree2.lastModifyFiles.get(directoryTree2.files.indexOf(file));
-				if(lastModifyTree1 != lastModifyTree2) {
-					if(lastModifyTree1 > lastModifyTree2) {
-						String pathFrom = directory1+file;
-						String pathTo = directory2+file;
-						System.out.println("[NOFF] Copying file "+file+" from "+pathFrom+" to "+pathTo);
-						try {
-							CopyFile(new File(pathFrom), new File(pathTo));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					} else {
-						String pathFrom = directory2+file;
-						String pathTo = directory1+file;
-						System.out.println("[NOSF] Copying file "+file+" from "+pathFrom+" to "+pathTo);
-						try {
-							CopyFile(new File(pathFrom), new File(pathTo));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				// If the file is present in the second directory, checking the file size
+
+				if((new File(directory1+file)).length() != (new File(directory2+file)).length()) {
+					// If size is different check last modify dates to copy only the newer file
+					int lastModifyTree1 = directoryTree1.lastModifyFiles.get(i);
+					int lastModifyTree2 =  directoryTree2.lastModifyFiles.get(directoryTree2.files.indexOf(file));
+					if(lastModifyTree1 != lastModifyTree2) {
+						if(lastModifyTree1 > lastModifyTree2) {
+							String pathFrom = directory1+file;
+							String pathTo = directory2+file;
+							System.out.println("[NOFF] Copying file "+file+" from "+pathFrom+" to "+pathTo);
+							try {
+								CopyFile(new File(pathFrom), new File(pathTo));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} else {
+							String pathFrom = directory2+file;
+							String pathTo = directory1+file;
+							System.out.println("[NOSF] Copying file "+file+" from "+pathFrom+" to "+pathTo);
+							try {
+								CopyFile(new File(pathFrom), new File(pathTo));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}
