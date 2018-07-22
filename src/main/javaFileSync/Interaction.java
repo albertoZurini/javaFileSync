@@ -26,7 +26,7 @@ public class Interaction
 		} catch(Exception e) {
 			System.out.print(title+": "+text+" [Y/N]: ");
 			String input = console.readLine();
-			return input.indexOf('Y') != -1;
+			return input.toUpperCase().indexOf('Y') != -1;
 		}
 	}
 	//Alert window
